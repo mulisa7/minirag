@@ -51,6 +51,10 @@ files -> loader -> chunker -> BM25 index -> top-k chunks -> answer
 | `answer.py` | extractive answer and the Ollama call |
 | `cli.py` | the `index`, `search` and `ask` commands |
 
+## Walkthrough
+
+[`docs/images`](docs/images) has six cards that follow one real question through the pipeline (chunking, scoring, sentence picking, a failure case). They are drawn from the tool's own output by `docs/make_images.py`, so the numbers are real.
+
 ## Limits
 
 - BM25 matches words, not meaning. "automobile" won't find a chunk that only says "car". Swapping in embeddings is the obvious next step.

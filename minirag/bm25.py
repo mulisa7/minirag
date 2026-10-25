@@ -3,7 +3,8 @@ import re
 from collections import Counter
 
 STOP = set(
-    "a an and are as at be by for from has have in is it its of on or that the this to was were will with".split()
+    """a an and are as at be by for from has have in is it its of on or that the this to was were will with
+    what which who whom whose how many much when where why do does did can could should would""".split()
 )
 
 

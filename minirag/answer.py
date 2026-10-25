@@ -10,8 +10,10 @@ def extractive(question: str, hits: list[Hit], n: int = 2) -> str:
     """No model: return the sentences from the top chunks that share the most
     words with the question."""
     q = set(tokenize(question))
-    sents = [s for h in hits for s in split_sentences(h.text)]
-    best = sorted(sents, key=lambda s: len(q & set(tokenize(s))), reverse=True)[:n]
+    # chunks overlap, so the same sentence can show up more than once
+    sents = list(dict.fromkeys(s for h in hits for s in split_sentences(h.text)))
+    scored = [(len(q & set(tokenize(s))), s) for s in sents]
+    best = [s for n_match, s in sorted(scored, key=lambda x: -x[0])[:n] if n_match]
     return " ".join(best) if best else "No answer found in the indexed documents."
 
 

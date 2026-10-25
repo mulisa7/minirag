@@ -56,8 +56,8 @@ def main(argv=None):
     else:
         print(extractive(args.question, hits))
     print("\nsources:")
-    for h in hits:
-        print(" -", h.source)
+    for source in dict.fromkeys(h.source for h in hits):
+        print(" -", source)
     return 0
 
 

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from minirag.bm25 import tokenize
+from minirag.answer import extractive
 from minirag.chunker import chunk
 from minirag.cli import main
 from minirag.index import Index
@@ -40,6 +41,13 @@ def test_save_and_load_roundtrip(tmp_path):
     idx.save(str(path))
     again = Index.load(str(path))
     assert again.search("hottest planet", k=1)[0].text == idx.search("hottest planet", k=1)[0].text
+
+
+def test_answer_has_no_repeats_or_unrelated_sentences():
+    idx = Index.build(str(DOCS), max_words=25)  # small chunks overlap a lot
+    answer = extractive("tallest volcano", idx.search("tallest volcano", k=4))
+    assert answer.count("Olympus Mons") == 1
+    assert "Venus" not in answer
 
 
 def test_cli_ask(tmp_path, capsys):
